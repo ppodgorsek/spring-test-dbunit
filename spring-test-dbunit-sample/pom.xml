@@ -52,6 +52,10 @@
 		<url>https://github.com/ppodgorsek/spring-test-dbunit/issues</url>
 	</issueManagement>
 
+	<properties>
+		<config.path.prefix>..</config.path.prefix>
+	</properties>
+
 	<build>
 		<plugins>
 			<plugin>

@@ -55,6 +55,17 @@
 		<url>https://github.com/ppodgorsek/spring-test-dbunit/issues</url>
 	</issueManagement>
 
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
 	<modules>
 		<module>spring-test-dbunit-core</module>
 		<module>spring-test-dbunit-sample</module>
@@ -63,6 +74,9 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<java.version>1.8</java.version>
+
+		<config.path.prefix>.</config.path.prefix>
+		<config.path.output>target</config.path.output>
 
 		<dbunit.version>2.5.2</dbunit.version>
 		<doxia-module-markdown.version>1.7</doxia-module-markdown.version>
@@ -74,12 +88,14 @@
 		<spring.version>4.2.5.RELEASE</spring.version>
 
 		<!-- Maven plugins -->
+		<ant-contrib.version>1.0b3</ant-contrib.version>
 		<cobertura-maven-plugin.version>2.7</cobertura-maven-plugin.version>
 		<maven-antrun-plugin.version>1.7</maven-antrun-plugin.version>
 		<maven-clean-plugin.version>2.5</maven-clean-plugin.version>
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
 		<maven-deploy-plugin.version>2.8.2</maven-deploy-plugin.version>
 		<maven-eclipse-plugin.version>2.9</maven-eclipse-plugin.version>
+		<maven-gpg-plugin.version>1.6</maven-gpg-plugin.version>
 		<maven-install-plugin.version>2.5.2</maven-install-plugin.version>
 		<maven-jar-plugin.version>2.5</maven-jar-plugin.version>
 		<maven-javadoc-plugin.version>2.9.1</maven-javadoc-plugin.version>
@@ -93,6 +109,7 @@
 		<maven-source-plugin.version>2.3</maven-source-plugin.version>
 		<maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>
 		<maven-surefire-report-plugin.version>2.19.1</maven-surefire-report-plugin.version>
+		<nexus-staging-maven-plugin.version>1.6.8</nexus-staging-maven-plugin.version>
 		<site-maven-plugin.version>0.12</site-maven-plugin.version>
 	</properties>
 
@@ -194,6 +211,22 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-antrun-plugin</artifactId>
 					<version>${maven-antrun-plugin.version}</version>
+					<dependencies>
+						<dependency>
+							<groupId>ant-contrib</groupId>
+							<artifactId>ant-contrib</artifactId>
+							<version>${ant-contrib.version}</version>
+							<exclusions>
+								<exclusion>
+									<groupId>ant</groupId>
+									<artifactId>ant</artifactId>
+								</exclusion>
+							</exclusions>
+						</dependency>
+					</dependencies>
+					<configuration>
+						<exportAntProperties>true</exportAntProperties>
+					</configuration>
 					<executions>
 						<execution>
 							<id>copy-readme</id>
@@ -284,6 +317,13 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
 					<version>${maven-jar-plugin.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>test-jar</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -331,36 +371,6 @@
 					<version>${maven-surefire-plugin.version}</version>
 				</plugin>
 				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>${maven-source-plugin.version}</version>
-					<executions>
-						<execution>
-							<id>attach-sources</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>${maven-javadoc-plugin.version}</version>
-					<configuration>
-						<author>true</author>
-						<encoding>UTF-8</encoding>
-					</configuration>
-					<executions>
-						<execution>
-							<id>attach-javadocs</id>
-							<goals>
-								<goal>jar</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-				<plugin>
 					<groupId>com.github.github</groupId>
 					<artifactId>site-maven-plugin</artifactId>
 					<version>${site-maven-plugin.version}</version>
@@ -378,7 +388,118 @@
 				</plugin>
 			</plugins>
 		</pluginManagement>
+
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>license-copy</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<!-- Place any Ant tasks here. You can add anything you can add between 
+								<target> and </target> in a build.xml. -->
+							<tasks>
+								<taskdef
+									resource="net/sf/antcontrib/antcontrib.properties"
+									classpathref="maven.plugin.classpath" />
+
+								<copy file="${config.path.prefix}/LICENSE"
+									tofile="${config.path.output}/META-INF/LICENSE"
+									failonerror="true" />
+								<copy file="${config.path.prefix}/LICENSE"
+									tofile="${config.path.output}/classes/META-INF/LICENSE"
+									failonerror="true" />
+								<copy file="${config.path.prefix}/LICENSE"
+									tofile="${config.path.output}/test-classes/META-INF/LICENSE"
+									failonerror="true" />
+								<copy file="${config.path.prefix}/LICENSE"
+									tofile="${config.path.output}/apidocs/META-INF/LICENSE"
+									failonerror="true" />
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- OSSRH -->
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>${nexus-staging-maven-plugin.version}</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven-source-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven-javadoc-plugin.version}</version>
+				<configuration>
+					<author>true</author>
+					<encoding>UTF-8</encoding>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
 	</build>
+
+	<profiles>
+		<profile>
+			<id>artifacts-signing</id>
+			<activation>
+				<activeByDefault>false</activeByDefault>
+				<property>
+					<name>!maven.sign.skip</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>${maven-gpg-plugin.version}</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<reporting>
 		<plugins>
