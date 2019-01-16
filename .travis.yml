@@ -1,1 +1,5 @@
 language: java
+
+script:
+- mvn install -Dmaven.sign.skip=true -DskipTests=true -Dmaven.javadoc.skip=true -B -V
+- mvn test -Dmaven.sign.skip=true -B
