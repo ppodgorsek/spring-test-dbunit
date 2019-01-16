@@ -477,7 +477,8 @@
 			<activation>
 				<activeByDefault>false</activeByDefault>
 				<property>
-					<name>!maven.sign.skip</name>
+					<name>maven.sign.skip</name>
+					<value>false</value>
 				</property>
 			</activation>
 			<build>
