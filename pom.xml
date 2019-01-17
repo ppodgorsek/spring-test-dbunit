@@ -13,7 +13,7 @@
 
 	<groupId>com.github.ppodgorsek</groupId>
 	<artifactId>spring-test-dbunit-parent</artifactId>
-	<version>4.0.0</version>
+	<version>4.1.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Spring Test DBUnit Parent</name>
