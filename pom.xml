@@ -79,7 +79,7 @@
 		<config.path.output>target</config.path.output>
 
 		<dbunit.version>2.5.2</dbunit.version>
-		<doxia-module-markdown.version>1.7</doxia-module-markdown.version>
+		<doxia-module-markdown.version>1.8</doxia-module-markdown.version>
 		<hibernate-entitymanager.version>4.3.6.Final</hibernate-entitymanager.version>
 		<hsqldb.version>2.4.1</hsqldb.version>
 		<junit.version>4.12</junit.version>
