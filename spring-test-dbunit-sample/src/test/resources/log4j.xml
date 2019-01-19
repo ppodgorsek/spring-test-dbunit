@@ -12,13 +12,12 @@
 	</appender>
 
 	<logger name="org.springframework">
-		<level value="debug" />
+		<level value="info" />
 	</logger>
 
 	<logger name="org.hibernate.SQL">
 		<level value="debug" />
 	</logger>
-
 	<logger name="org.hibernate">
 		<level value="debug" />
 	</logger>
