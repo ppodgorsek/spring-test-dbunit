@@ -27,8 +27,8 @@ import java.lang.annotation.Target;
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 
 /**
- * Test annotation which indicates how to put a database into a know state after tests have run. This annotation can be
- * placed on a class or on methods. When placed on a class the setup is applied after each test methods is executed.
+ * Test annotation which indicates how to put a database into a known state after tests have run. This annotation can be
+ * placed on a class or on methods. When placed on a class the setup is applied after each test method is executed.
  *
  * @see DatabaseSetup
  * @see ExpectedDatabase

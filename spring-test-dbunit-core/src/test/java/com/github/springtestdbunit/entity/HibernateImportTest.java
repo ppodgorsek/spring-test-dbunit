@@ -16,11 +16,14 @@
 
 package com.github.springtestdbunit.entity;
 
+import javax.annotation.Resource;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import com.github.springtestdbunit.config.CoreTestConfiguration;
 
 /**
  * Test the initial state of the database to ensure that import.sql has run.
@@ -28,10 +31,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Phillip Webb
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/META-INF/dbunit-context.xml")
+@ContextConfiguration(classes = CoreTestConfiguration.class)
 public class HibernateImportTest {
 
-	@Autowired
+	@Resource
 	private EntityAssert entityAssert;
 
 	@Test

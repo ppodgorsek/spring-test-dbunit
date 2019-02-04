@@ -27,11 +27,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import com.github.springtestdbunit.config.CoreTestConfiguration;
 import com.github.springtestdbunit.entity.EntityAssert;
 import com.github.springtestdbunit.testutils.AfterTearDownDbUnitTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/META-INF/dbunit-context.xml")
+@ContextConfiguration(classes = CoreTestConfiguration.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
 		AfterTearDownDbUnitTestExecutionListener.class })
 @DatabaseTearDown(type = DatabaseOperation.UPDATE, value = "/META-INF/db/update.xml")

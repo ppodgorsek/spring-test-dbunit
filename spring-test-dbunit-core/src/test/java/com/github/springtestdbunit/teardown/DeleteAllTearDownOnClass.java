@@ -27,11 +27,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.springtestdbunit.annotation.DatabaseOperation;
 import com.github.springtestdbunit.annotation.DatabaseTearDown;
+import com.github.springtestdbunit.annotation.DbUnitConfiguration;
+import com.github.springtestdbunit.config.CoreTestConfiguration;
 import com.github.springtestdbunit.entity.EntityAssert;
 import com.github.springtestdbunit.testutils.AfterTearDownDbUnitTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/META-INF/dbunit-context.xml")
+@ContextConfiguration(classes = CoreTestConfiguration.class)
+@DbUnitConfiguration(databaseConnection = "databaseDataSourceConnectionFactory")
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class,
 		AfterTearDownDbUnitTestExecutionListener.class })
 @DatabaseTearDown(type = DatabaseOperation.DELETE, value = "/META-INF/db/delete.xml")
@@ -42,11 +45,11 @@ public class DeleteAllTearDownOnClass {
 	private EntityAssert entityAssert;
 
 	@Test
-	public void test() throws Exception {
+	public void test() {
 		this.entityAssert.assertValues("existing1", "existing2");
 	}
 
-	public void afterTest() throws Exception {
+	public void afterTest() {
 		this.entityAssert.assertValues("existing2");
 	}
 

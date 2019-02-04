@@ -25,10 +25,11 @@ import org.springframework.test.context.support.DependencyInjectionTestExecution
 import org.springframework.transaction.annotation.Transactional;
 
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.config.CoreTestConfiguration;
 import com.github.springtestdbunit.testutils.MustFailDbUnitTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/META-INF/dbunit-context.xml")
+@ContextConfiguration(classes = CoreTestConfiguration.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, MustFailDbUnitTestExecutionListener.class })
 @Transactional
 public class ExpectedQueryFailureOnMethodTest {

@@ -80,6 +80,16 @@
 		<dependency>
 			<groupId>com.github.ppodgorsek</groupId>
 			<artifactId>spring-test-dbunit-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.ppodgorsek</groupId>
+			<artifactId>spring-test-dbunit-core</artifactId>
+			<type>test-jar</type>
+		</dependency>
+
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
 			<scope>test</scope>
 		</dependency>
 
@@ -97,7 +107,7 @@
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
+			<artifactId>hibernate-core</artifactId>
 		</dependency>
 
 		<dependency>

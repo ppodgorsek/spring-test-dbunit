@@ -27,11 +27,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.ExpectedDatabase;
+import com.github.springtestdbunit.config.CoreTestConfiguration;
 import com.github.springtestdbunit.dataset.ReplacementDataSetModifier;
 import com.github.springtestdbunit.expected.ExpectedQueryWithModifierOnMethodTest.OuterModifier;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("/META-INF/dbunit-context.xml")
+@ContextConfiguration(classes = CoreTestConfiguration.class)
 @TestExecutionListeners({ DependencyInjectionTestExecutionListener.class, DbUnitTestExecutionListener.class })
 @Transactional
 @ExpectedDatabase(modifiers = OuterModifier.class)
